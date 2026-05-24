@@ -38,7 +38,3 @@ This game and its engine is being built in SDL3 as of now for its speed and effi
 - C++
 
 I hate its syntax, but its very powerful when it comes to engine dev. Need I say more?
-
-- custom level format
-
-We currently have not decided the exact format of the world.

@@ -4,6 +4,16 @@ SDL_Renderer* Renderer::renderer = nullptr;
 
 bool Renderer::Init(SDL_Window* window){
     renderer = SDL_CreateRenderer(window, NULL);
+    if(!renderer){
+        return false;
+    }
+    SDL_SetRenderLogicalPresentation(
+        renderer,
+        320,
+        240,
+        SDL_LOGICAL_PRESENTATION_INTEGER_SCALE
+    );
+    
     return renderer != nullptr;
 }
 
@@ -25,6 +35,28 @@ void Renderer::DrawRect(float x, float y, float w, float h, SDL_Color color, boo
     } else{
         SDL_RenderRect(renderer, &rect);
     }
+}
+
+void Renderer::DrawTexture(SDL_Texture* tex, float x, float y, float w, float h){
+    if(!tex){
+        return;
+    }
+    SDL_FRect src;
+    src.x = 0;
+    src.y = 0;
+    
+    float tw, th;
+    SDL_GetTextureSize(tex, &tw, &th);
+
+    src.w = tw;
+    src.h = th;
+
+    SDL_FRect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = w;
+    dst.h = h;
+    SDL_RenderTexture(renderer, tex, &src, &dst);
 }
 
 void Renderer::ShutDown(){

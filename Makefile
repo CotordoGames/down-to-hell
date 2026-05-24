@@ -5,7 +5,7 @@ CXXFLAGS := -std=c++20 -Wall -Wextra -O2 -I/usr/include/SDL3
 
 # Linker settings
 # Directly link against the lowercase sdl3 library
-LDFLAGS  := -lSDL3
+LDFLAGS  := -lSDL3 -lSDL3_image -lSDL3_ttf
 
 
 # Directory structures

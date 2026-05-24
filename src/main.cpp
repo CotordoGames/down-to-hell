@@ -4,11 +4,10 @@
 #include <SDL3/SDL_main.h>
 #include "Engine/Input.h"
 #include "Engine/Renderer.h"
+#include "Engine/Objects.h"
+#include <cmath>
 
-int x = 0;
-int y = 0;
-int vx = 0;
-int vy = 0;
+GameObject initPlayer;
 
 int main(int argc, char* argv[]){
     
@@ -30,6 +29,23 @@ int main(int argc, char* argv[]){
 
     Renderer::Init(window);
 
+    //initialize objects before first frame is drawn
+    initPlayer.texture = IMG_LoadTexture(Renderer::renderer, "assets/sprites/objects/player.png");
+    SDL_SetTextureScaleMode(initPlayer.texture, SDL_SCALEMODE_NEAREST);
+
+    initPlayer.x = 0;
+    initPlayer.y = 0;
+
+    initPlayer.w = 8;
+    initPlayer.h = 8;
+
+    initPlayer.vx = 0;
+    initPlayer.vy = 0;
+
+    initPlayer.flags = 0;
+
+    GameObject& player = ObjectManager::Add(initPlayer);
+
     SDL_Log("Hello, World!");
 
     //loop
@@ -47,16 +63,15 @@ int main(int argc, char* argv[]){
 
         Input::Update();
 
-        vx = (Input::KeyDown(SDL_SCANCODE_RIGHT) - Input::KeyDown(SDL_SCANCODE_LEFT)) * 4;
-        vy = (Input::KeyDown(SDL_SCANCODE_DOWN) - Input::KeyDown(SDL_SCANCODE_UP)) * 4;
+        player.vx = std::lerp(player.vx, (Input::KeyDown(SDL_SCANCODE_RIGHT) - Input::KeyDown(SDL_SCANCODE_LEFT)) * 4, 0.1);
+        player.vy = std::lerp(player.vy, (Input::KeyDown(SDL_SCANCODE_DOWN) - Input::KeyDown(SDL_SCANCODE_UP)) * 4, 0.1);
 
-        x += vx;
-        y += vy;
+        ObjectManager::Update();
 
         Renderer::Clear();
 
         //draw stuff here
-        Renderer::DrawRect(x, y, 16, 16, (SDL_Color){255, 0, 0, 255}, true);
+        ObjectManager::Render();
 
         Renderer::Present();
 

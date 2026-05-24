@@ -10,6 +10,7 @@ public:
 
     //draw calls
     static void DrawRect(float x, float y, float w, float h, SDL_Color color, bool fill);
+    static void DrawTexture(SDL_Texture* tex, float x, float y, float w, float h);
 
     //renderer
     static SDL_Renderer* renderer;
