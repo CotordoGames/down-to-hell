@@ -17,7 +17,7 @@ BIN_DIR  := bin
 TARGET   := $(BIN_DIR)/main
 
 # Automatically find all .cpp, .cc, or .cxx files in src/
-SRCS     := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.cc) $(wildcard $(SRC_DIR)/*.cxx)
+SRCS := $(shell find $(SRC_DIR) -type f \( -name "*.cpp" -o -name "*.cc" -o -name "*.cxx" \))
 # Map source files to object files in the obj/ directory
 OBJS     := $(SRCS:$(SRC_DIR)/%=$(OBJ_DIR)/%.o)
 
@@ -30,8 +30,8 @@ $(TARGET): $(OBJS) | $(BIN_DIR)
 
 # Compilation rule for source files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/% | $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-
 # Create directories if they do not exist
 $(BIN_DIR) $(OBJ_DIR):
 	mkdir -p $@
