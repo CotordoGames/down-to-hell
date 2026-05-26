@@ -6,6 +6,9 @@
 #include "Renderer.h"
 #include "Mathf.h"
 
+#define OBJECT_SOLID 1 << 0
+#define OBJECT_GRAVITY 1<< 1
+
 struct GameObject{
     SDL_Texture* texture;
     vec2 position;

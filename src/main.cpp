@@ -6,6 +6,7 @@
 #include <cmath>
 
 GameObject initPlayer;
+GameObject initSolid;
 
 int main(int argc, char* argv[]){
     
@@ -27,24 +28,45 @@ int main(int argc, char* argv[]){
 
     Renderer::Init(window);
 
+    //--player init--//
     //initialize objects before first frame is drawn
     initPlayer.texture = IMG_LoadTexture(Renderer::renderer, "assets/sprites/objects/player.png");
     SDL_SetTextureScaleMode(initPlayer.texture, SDL_SCALEMODE_NEAREST);
 
-    initPlayer.position = {0, 0};
+    initPlayer.position = {1, 1};
 
     initPlayer.size = {8, 8};
 
     initPlayer.velocity = {0, 0};
 
-    initPlayer.flags = 0;
+    initPlayer.flags = OBJECT_SOLID;
 
     initPlayer.collider = {0, 0, 8, 8};
 
     initPlayer.colliderOffset = {0, 0};
 
     GameObject& player = ObjectManager::Add(initPlayer);
+    //--player init--//
 
+    //--solid init--//
+    //initialize objects before first frame is drawn
+    initSolid.texture = IMG_LoadTexture(Renderer::renderer, "assets/sprites/objects/player.png");
+    SDL_SetTextureScaleMode(initSolid.texture, SDL_SCALEMODE_NEAREST);
+
+    initSolid.position = {160, 120};
+
+    initSolid.size = {8, 8};
+
+    initSolid.velocity = {0, 0};
+
+    initSolid.flags = OBJECT_SOLID;
+
+    initSolid.collider = {0, 0, 8, 8};
+
+    initSolid.colliderOffset = {0, 0};
+
+    GameObject& solid = ObjectManager::Add(initSolid);
+    //--init solid--//
     SDL_Log("Hello, World!");
 
     //loop
