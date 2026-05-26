@@ -21,11 +21,11 @@ struct GameObject{
 
 class ObjectManager{
 public:
-    static GameObject& Add(const GameObject& object);
+    static GameObject* Add(GameObject* object);
     static void Update();
     static void Render();
     static bool debug;
 
 private:
-    static std::vector<GameObject> Objects; //this is a array of active objects but in C++ so it looks confusing
+    static std::vector<GameObject*> Objects; //this is a array of active objects but in C++ so it looks confusing
 };
