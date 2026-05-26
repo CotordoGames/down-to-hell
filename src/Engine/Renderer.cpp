@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include <cmath>
 
 SDL_Renderer* Renderer::renderer = nullptr;
 
@@ -11,8 +12,10 @@ bool Renderer::Init(SDL_Window* window){
         renderer,
         320,
         240,
-        SDL_LOGICAL_PRESENTATION_INTEGER_SCALE
+        SDL_LOGICAL_PRESENTATION_LETTERBOX
     );
+
+    SDL_SetRenderVSync(renderer, 1);
     
     return renderer != nullptr;
 }
@@ -27,7 +30,7 @@ void Renderer::Present(){
 }
 
 void Renderer::DrawRect(float x, float y, float w, float h, SDL_Color color, bool fill){
-    SDL_FRect rect = {x, y, w, h};
+    SDL_FRect rect = {std::round(x), std::round(y), w, h};
 
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     if(fill){
@@ -52,8 +55,8 @@ void Renderer::DrawTexture(SDL_Texture* tex, float x, float y, float w, float h)
     src.h = th;
 
     SDL_FRect dst;
-    dst.x = x;
-    dst.y = y;
+    dst.x = std::round(x);
+    dst.y = std::round(y);
     dst.w = w;
     dst.h = h;
     SDL_RenderTexture(renderer, tex, &src, &dst);

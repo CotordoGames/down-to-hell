@@ -11,6 +11,6 @@ public:
     static bool KeyReleased(SDL_Scancode key);
 
 private:
-    static const bool* keyboard;
+    static uint8_t keyboard[SDL_SCANCODE_COUNT];
     static bool previous[SDL_SCANCODE_COUNT];
 };

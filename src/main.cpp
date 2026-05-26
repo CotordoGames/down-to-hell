@@ -2,9 +2,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3/SDL_main.h>
-#include "Engine/Input.h"
-#include "Engine/Renderer.h"
-#include "Engine/Objects.h"
+#include "Engine/Engine.h"
 #include <cmath>
 
 GameObject initPlayer;
@@ -18,7 +16,7 @@ int main(int argc, char* argv[]){
     }
 
     //create the window
-    SDL_Window* window = SDL_CreateWindow("Down To Hell -- v A0.00", 640, 480, SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Down To Hell -- v A0.00", 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN);
 
     //make sure SDL actually made the window
     if(!window){
@@ -33,16 +31,17 @@ int main(int argc, char* argv[]){
     initPlayer.texture = IMG_LoadTexture(Renderer::renderer, "assets/sprites/objects/player.png");
     SDL_SetTextureScaleMode(initPlayer.texture, SDL_SCALEMODE_NEAREST);
 
-    initPlayer.x = 0;
-    initPlayer.y = 0;
+    initPlayer.position = {0, 0};
 
-    initPlayer.w = 8;
-    initPlayer.h = 8;
+    initPlayer.size = {8, 8};
 
-    initPlayer.vx = 0;
-    initPlayer.vy = 0;
+    initPlayer.velocity = {0, 0};
 
     initPlayer.flags = 0;
+
+    initPlayer.collider = {0, 0, 8, 8};
+
+    initPlayer.colliderOffset = {0, 0};
 
     GameObject& player = ObjectManager::Add(initPlayer);
 
@@ -56,15 +55,15 @@ int main(int argc, char* argv[]){
             if(event.type == SDL_EVENT_QUIT){
                 running = false;
             } else if(event.type == SDL_EVENT_WINDOW_RESIZED){
-                SDL_SetRenderLogicalPresentation(Renderer::renderer, 320, 180, SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
+                SDL_SetRenderLogicalPresentation(Renderer::renderer, 320, 240, SDL_LOGICAL_PRESENTATION_LETTERBOX);
             }
         }
         Uint64 start = SDL_GetTicks();
 
         Input::Update();
 
-        player.vx = std::lerp(player.vx, (Input::KeyDown(SDL_SCANCODE_RIGHT) - Input::KeyDown(SDL_SCANCODE_LEFT)) * 4, 0.1);
-        player.vy = std::lerp(player.vy, (Input::KeyDown(SDL_SCANCODE_DOWN) - Input::KeyDown(SDL_SCANCODE_UP)) * 4, 0.1);
+        player.velocity.x = std::lerp(player.velocity.x, (Input::KeyDown(SDL_SCANCODE_RIGHT) - Input::KeyDown(SDL_SCANCODE_LEFT)) * 4, 0.1);
+        player.velocity.y = std::lerp(player.velocity.y, (Input::KeyDown(SDL_SCANCODE_DOWN) - Input::KeyDown(SDL_SCANCODE_UP)) * 4, 0.1);
 
         ObjectManager::Update();
 

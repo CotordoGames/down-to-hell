@@ -4,13 +4,15 @@
 #include <SDL3_image/SDL_image.h>
 #include <vector>
 #include "Renderer.h"
+#include "Mathf.h"
 
 struct GameObject{
     SDL_Texture* texture;
-    float x, y;
-    float vx, vy;
-    float w, h;
+    vec2 position;
+    vec2 velocity;
+    vec2 size;
     SDL_FRect collider;
+    vec2 colliderOffset;
     uint32_t flags; // OR these together
 };
 
@@ -19,6 +21,7 @@ public:
     static GameObject& Add(const GameObject& object);
     static void Update();
     static void Render();
+    static bool debug;
 
 private:
     static std::vector<GameObject> Objects; //this is a array of active objects but in C++ so it looks confusing

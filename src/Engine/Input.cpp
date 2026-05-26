@@ -1,16 +1,17 @@
 #include "Input.h"
 
-const bool* Input::keyboard = nullptr;
+uint8_t Input::keyboard[SDL_SCANCODE_COUNT] = {};
 
 bool Input::previous[SDL_SCANCODE_COUNT] = {};
 
 void Input::Update(){
 
-    for(int i = 0; i < SDL_SCANCODE_COUNT; i++){
-        previous[i] = keyboard ? keyboard[i] : false;
-    }
+    const auto* state = SDL_GetKeyboardState(NULL);
 
-    keyboard = SDL_GetKeyboardState(NULL);
+    for(int i = 0; i < SDL_SCANCODE_COUNT; i++){
+        previous[i] = keyboard[i];
+        keyboard[i] = state[i];
+    }
 
 }
 
